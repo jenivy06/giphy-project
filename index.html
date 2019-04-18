@@ -4,75 +4,83 @@
 <head>
     <title>SNL Gifs</title>
     <meta charset="UTF-8">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <!--<script type="text/javascript" src="assets/javascript/app.js"></script>-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 <body>
         <div id ="headerindex"> 
             <h1 class="h1index">SNL's Best!</h1>
-            <div id = "buttons-view" class="col-md-6">
+            <div id="buttons-view" class="btn btn-light namebutton">
         </div>
         </div>
         <br>
         <br>
       <div class = "container wrapperindex">
         <form id ="search">
-                <label for="movie-input">Search for your favorite SNL cast member:</label>
-                <input type="text" id="movie-input">
+                <label for="name-input">Search for your favorite SNL cast member:</label>
+                <input type="text" id="name-input">
                 <br>
-          
                 <!-- Button triggers new movie to be added -->
-                <input id="add-name" type="submit" value="search">
+      <input id="add-name" type="submit" value="Submit">
+  
         </form>
-        <div class = "name" id = "gif-view">
+        <!-- Area for gifs to appear-->
+        <div id="gif-view">
 
         </div>
       </div>  
       
 </body>
+</html>
 <script>
-$(document).ready(function() {
-    var names = ["Chris Farley", "Will Ferrell", "Bill Hader", "Adam Sandler", "Kristen Wiig", "Mike Meyers", "Dana Carvey", "Molly Shannon"]
-    function displayNameInfo() {
+//Initial array of names
 
-        var name = $(this).attr("data-name");
-        console.log(this);
-        var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + name + "&apikey=EeLVOUPGYR0IFcYTnM4KxPnPy4CEKtkr&limit=10";
-        //"http://api.giphy.com/v1/gifs/search?q=ryan+gosling&api_key=YOUR_API_KEY&limit=5"
+var names = ["Chris Farley", "Will Ferrell", "Bill Hader", "Adam Sandler", "Molly Shannon"];
+console.log(names)
+
+
+//function for displaying names
+function renderButtons() {
+  $("#buttons-view").empty();
+  //loop through array of names
+  for (var i = 0; i < names.length; i++) {
+    console.log(names)
+    //dynamically generate buttons for each name in array
+    var a = $("<button>");
+    // Adding a class of name-btn to our button 
+    a.addClass("name-btn");
+    // Adding a data-attribute
+    a.attr("data-name", names[i]);
+    // Providing the initial button text
+    a.text(names[i]);
+    // Adding the button to the buttons-view div
+    $("#buttons-view").append(a);
     
-        $.ajax({
-            url: queryURL,
-            method: "GET"
-          })
-          .then(function(response) {
-            console.log(queryURL);
-            console.log(response);
-            var nameDiv = $("<div class='name'>");
-            var rating = response.Rated;
-            var pOne = $("<p>").text("Rating: " + rating)
-            nameDiv.append(pOne);
-            var imgURL = response;
-            var image = $("<img>").attr("src", imgURL);
-            movieDiv.append(image);
-            $("#movies-view").prepend(movieDiv);
-            
-          });
+}
+  
+}
 
-        }
-        function renderButtons() {
-          $("#buttons-view").empty();
-          for (var i = 0; i < names.length; i++) {
-                var a = $("<button>");
-                a.addClass("name-btn");
-                a.attr("data-name", names[i]);
-                a.text(movies[i]);
-                $("#buttons-view").append(a);
-          }
-        }
-        });
-   
+// This function handles events where one button is clicked
+$("#add-name").on("click", function(event) {
+  event.preventDefault();
+  // This line will grab the text from the input box
+  var name = $("#name-input").val().trim();
+  // The name from the textbox is then added to our array
+  names.push(name);
+  console.log(names);
+  // calling renderButtons which handles the processing of our name array
+  renderButtons();
+});
+// Calling the renderButtons function at least once to display the initial list of movies
+//renderButtons();
+// Adding a click event listener to all elements with a class of "movie-btn"
+//$(document).on("click", ".name-btn", displayNameInfo);
+
+// Calling the renderButtons function to display the intial buttons
+renderButtons();
+
+
 
 </script>
-</html>

@@ -29,7 +29,10 @@
 
 }
 
-.namebtn {
+.name-btn {
+    padding: 10px;
+    padding-right: 10px;
+    margin-right: 10px;
     
 
 .name {
