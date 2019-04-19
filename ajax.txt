@@ -1,9 +1,10 @@
-//function calls on giphy API and renders data from the array
+ //function calls on giphy API and renders data from the array
 
 function displayNameInfo() {
   var name = $(this).attr("data-name");
-  console.log(name);
-  var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + name + "&api_key=EeLVOUPGYR0IFcYTnM4KxPnPy4CEKtkr&limit=10"; 
+  
+  var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + name + "&api_key=dc6zaTOxFJmzC&limit=10"; 
+  console.log(name)
   //AJAX call for the specific name being clicked
   $.ajax({
     url: queryURL,

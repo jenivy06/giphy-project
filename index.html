@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-        <body background="assets/images/snlimage.jpg">
+        <!--<body background="assets/images/snlimage.jpg" opacity="0.2">-->
 <head>
     <title>SNL Gifs</title>
     <meta charset="UTF-8">
@@ -19,8 +19,8 @@
         <br>
       <div class = "container wrapperindex">
         <form id ="search">
-                <label for="name-input">Search for your favorite SNL cast member:</label>
-                <input type="text" id="name-input">
+                <label for="name-input">Search for your favorite SNL cast member: 
+                <input type="text" id="name-input" placeholder="i.e., Bill Murray"> Then click on the button above to see the magic!</label>
                 <br>
                 <!-- Button triggers new movie to be added -->
       <input id="add-name" type="submit" value="Submit">
@@ -40,13 +40,14 @@
 var names = ["Chris Farley", "Will Ferrell", "Bill Hader", "Adam Sandler", "Molly Shannon"];
 console.log(names)
 
+ 
 
 //function for displaying names
 function renderButtons() {
   $("#buttons-view").empty();
   //loop through array of names
   for (var i = 0; i < names.length; i++) {
-    console.log(names)
+    
     //dynamically generate buttons for each name in array
     var a = $("<button>");
     // Adding a class of name-btn to our button 
@@ -59,9 +60,7 @@ function renderButtons() {
     $("#buttons-view").append(a);
     
 }
-  
 }
-
 // This function handles events where one button is clicked
 $("#add-name").on("click", function(event) {
   event.preventDefault();
@@ -73,14 +72,35 @@ $("#add-name").on("click", function(event) {
   // calling renderButtons which handles the processing of our name array
   renderButtons();
 });
-// Calling the renderButtons function at least once to display the initial list of movies
-//renderButtons();
+
 // Adding a click event listener to all elements with a class of "movie-btn"
 //$(document).on("click", ".name-btn", displayNameInfo);
+
+
+
+
 
 // Calling the renderButtons function to display the intial buttons
 renderButtons();
 
-
+//create function to query Giphy API
+function queryGiphy(name,fulfillGiphy){
+    let queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
+    name + "&api_key=dc6zaTOxFJmzC&limit=10&rating=PG-13";
+    let htmlRequest = new XMLHttpRequest();
+    htmlRequest.onload = function() { 
+        if(htmlRequest.response) {
+            let object = JSON.parse(htmlRequest.response);
+            fulfillGiphy(object.data);
+        } else {
+            console.log("error");
+        }
+    };
+    htmlRequest.open("GET", queryURL, true);
+    htmlRequest.send();
+}
+queryGiphy("Bill Murray", function(results){
+   console.log(results); 
+});
 
 </script>
