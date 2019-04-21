@@ -1,0 +1,20 @@
+
+//create function to query Giphy API
+function queryGiphy(name,fulfillGiphy){
+    let queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
+    name + "&api_key=dc6zaTOxFJmzC&limit=10&rating=PG-13";
+    let htmlRequest = new XMLHttpRequest();
+    htmlRequest.onload = function() { 
+        if(htmlRequest.response) {
+            let object = JSON.parse(htmlRequest.response);
+            fulfillGiphy(object.data);
+        } else {
+            console.log("error");
+        }
+    };
+    htmlRequest.open("GET", queryURL, true);
+    htmlRequest.send();
+}
+queryGiphy("Bill Murray", function(results){
+   console.log(results); 
+});
