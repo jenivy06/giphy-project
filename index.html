@@ -12,6 +12,7 @@
 <body>
         <div id ="headerindex"> 
             <h1 class="h1index">SNL's Best!</h1>
+            
             <button id="data-name"><div id="buttons-view" class="btn btn-light namebutton"></button>
         </div>
         </div>
@@ -27,7 +28,7 @@
   
         </form>
         <!-- Area for gifs to appear-->
-        <div id="gif-view" class="gif">
+        <div id="gif-view" class="gif" date-state="still">
 
         </div>
       </div>  
@@ -39,19 +40,22 @@
 //Initial array of names
 
 var names = ["Chris Farley", "Will Ferrell", "Bill Hader", "Adam Sandler", "Molly Shannon"];
+console.log(names[0]);
 
 
-//create on click function to get the API data from giphy when button is clicked
+//create on-click function to get the API data from giphy when a new name is entered and the button is clicked.
 
-$("#data-name").on("click", function() {
-  // create a variable to hold the person's name by looping through each item in the array
-  for (i = 0; i < names.length; i++){
-    var name = names[i];
-    console.log(name);
+
+$("#data-name").on("click", function(event) {
+  event.preventDefault();
+  //create a variable to hold the person's name by looping through each item in the array
+ for (i = 0; i < names.length; i++){
+ var name = names[i];
+  console.log(names[i]);
  }
   var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
         name + "&api_key=dc6zaTOxFJmzC&limit=10";
-        //console.log(person);
+      
         // Performing an AJAX request with the queryURL
       $.ajax({
         url: queryURL,
@@ -63,7 +67,7 @@ $("#data-name").on("click", function() {
           console.log(response);
           // storing the data from the AJAX request in the results variable
           var results = response.data;
-
+          //var animate = results[i].images.fixed_height.url;
           // Looping through each result item
           for (var i = 0; i < results.length; i++) {
           // create and store a div tag to hold the gif
@@ -96,7 +100,7 @@ function renderButtons() {
     // Adding a class of name-btn to our button 
     a.addClass("name-btn");
     // Adding a data-attribute
-    a.attr("data-name", names[i]);
+    a.attr("original-names", names[i]);
     // Providing the initial button text
     a.text(names[i]);
     // Adding the button to the buttons-view div
@@ -116,16 +120,63 @@ $("#add-name").on("click", function(event) {
   renderButtons();
 });
 
-// Adding a click event listener to all elements with a class of "movie-btn"
-//$(document).on("click", ".name-btn", displayNameInfo);
 // Calling the renderButtons function to display the intial buttons
 renderButtons();
 
-//create on click function to start/stop animation for gif
+// animate gifs
 $(".gif").on("click", function(){
-  
-  })
+  for (i = 0; i < names.length; i++){
+ var name = names[i];
+  }
+ var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
+        name + "&api_key=dc6zaTOxFJmzC&limit=10";
+        $.ajax({
+        url: queryURL,
+        method: "GET"
+      }) 
+      .then(function(response) {
+      console.log(response);
+      var results = response.data;
+      for (var i = 0; i < results.length; i++) {
+        var gifDiv = $("<div>");
+          var p = $("<p>").text("Rating: " + results[i].rating);
+            var gifImage = $("<img>");
+            gifImage.attr("src", results[i].images.fixed_height.url);
+            gifDiv.append(p);
+            gifDiv.append(gifImage);
+            $("#gif-view").prepend(gifDiv);
+            //then pause gifs
+            $(".gif").on("click", function(){
+              for (i = 0; i < names.length; i++){
+              var name = names[i];
+              }
+              var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
+              name + "&api_key=dc6zaTOxFJmzC&limit=10"; 
+              $.ajax({
+              url: queryURL,
+              method: "GET"
+              }) 
+              .then(function(response) {
+                var results = response.data;
+                for (var i = 0; i < results.length; i++) {
+                  var gifDiv = $("<div>");
+                    var p = $("<p>").text("Rating: " + results[i].rating);
+                      var gifImage = $("<img>");
+                      gifImage.attr("src", results[i].images.fixed_height_still.url);
+                      gifDiv.append(p);
+                      gifDiv.append(gifImage);
+            $("#gif-view").prepend(gifDiv);
+                }
+              });
+            })
+
+
+      }
+      })
 })
+
+
+  })
   
 
 </script>
